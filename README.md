@@ -5,6 +5,9 @@ Calliope is a micro controller used in school settings in Germany. Programming i
 in web based editors. These generate Hex code, which first needs to be downloaded to a local device and then has 
 to be transfered via USB to the Calliope. For details see https://calliope.cc/ .
 
+![Revisions](images/Calli_rev.png)
+![Reset](images/Calli_reset.png)
+
 Collected here are some bits and pieces to create a setup for this that streamlines this process for Linux. 
 
 (Simple) Troubleshooting:
