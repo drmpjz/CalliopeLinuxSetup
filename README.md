@@ -53,6 +53,23 @@ drwxr-xr-x 2 root root 0 Dec  9 18:56 /calli
   ```
 
   * The group id (gid) in the example above should be a group that all users that will work with the Calliope mini on the system.
+  
+* Configure sudo rights
+  * Checking the configuration in auto.master above, one can see the `--timeout=300` entry in the configuration. This setting will cause the file system to be automatically removed after 300s (5 min). This is in general a good value for interacive use This could be lowered to a minimum of 1s here, but even this is rather too long for the workflow with Calliope. To resolve this, the Calliope mini needs to be explizitly removed from the system, which is a prvileged operation. 
+  * To allow this, one assigns sudo (<https://en.wikipedia.org/wiki/Sudo>) rights to the users for this particular task
+  
+```text
+%calliuser ALL=(ALL) NOPASSWD: /usr/bin/umount /calli/cAm, /usr/bin/umount /calli/cBm, /usr/bin/umount /calli/cBf
+  ```
+
+  * This line should be added to `/etc/sudoers`. One might be tempted to shorten this to just list `/usr/bin/umount /calli/*`. This is not recommended as usage of wildcards in the command part of sudo rules is a very common source of privilege escalation problems.
+
+## Transfer Script
+
+Once all of this is in place files can be transfered with the [calliope.sh](calliope.sh) script. Things to note:
+
+* The filename to transfer is hard coded as `MYPROG.HEX`. If you want to change this, alter the definition of `progName` at the start of the script
+* This version of the script keeps a backup copy of all HEX files transfered to Calliope mini in the (hidden) direcotry `.archive_calli`. Advantage: One can revert to previous version of the (Hex) code in case subsequent changes broke a program. (Although )
 
 ## (Simple) Troubleshooting
 
