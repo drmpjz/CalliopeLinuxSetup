@@ -1,0 +1,3 @@
+cAm     -fstype=vfat,rw,gid=mc-user,umask=002     :/dev/disk/by-uuid/2702-1974
+cBm     -fstype=vfat,rw,gid=mc-user,umask=002     :/dev/disk/by-uuid/0123-4567
+cBf     -fstype=vfat,rw,gid=mc-user,umask=002     :/dev/disk/by-uuid/089A-BCDE

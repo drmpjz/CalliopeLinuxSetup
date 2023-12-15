@@ -1,0 +1,73 @@
+---
+- name: Setup environment for Calliope mini
+  hosts: localhost
+#
+# Note: Generate password with the following command:
+# ansible all -i localhost, -m debug -a "msg={{ 'microFun' | password_hash('sha512', 'mysecretsalt') }}"
+  
+  tasks
+  - name: Ensure mc-user group exists
+    group:
+      name: mc-user
+      state: present
+
+  - name: Setup Calliope mini user 1 (calliuser1)
+    user:
+      name: calliuser1
+      comment: Calliope mini user 1
+      group: mc-user
+      shell: /bin/bash
+      passowrd: $6$mysecretsalt$9LuQ2h0JGIht72G8nhkhEKou1G97NaKwiz70witt9be6ZB1.GNHViY0IX.Pdh5Csrd6ygi7IiWSJgWT6OSC2l1
+      update_password: on_create
+      state: present
+
+  - name: Setup Calliope mini user 2 (calliuser2)
+    user:
+      name: calliuser2
+      comment: Calliope mini user 2
+      group: mc-user
+      shell: /bin/bash
+      passowrd: $6$mysecretsalt$9LuQ2h0JGIht72G8nhkhEKou1G97NaKwiz70witt9be6ZB1.GNHViY0IX.Pdh5Csrd6ygi7IiWSJgWT6OSC2l1
+      update_password: on_create
+      state: present
+
+#  - name: Setup other users with access to Calliope mini as needed
+#    user:
+#      name: "{{ item }}"
+#      groups: mc-user
+#      append: yes
+#    with_items:
+#      - alice
+#      - bob
+
+
+
+  - name: Make sure autofs is installed
+    zypper:
+      name:
+        - autofs
+      state: latest
+      disable_recommends: no
+
+  - name: Create directory for Calliope mini mountpoints
+    file:
+      path: /calli
+      state: directory
+      owner: root
+      group: root
+      mode:  0755
+
+
+  - name: Copy autofs config files
+    copy:
+      src:   files/etc/
+      dest:  /etc
+      owner: root
+      group: root
+      mode:  0644
+
+  - name: Enable and (re)start autofs service
+    systemd:
+      name:    autofs.service
+      enabled: yes
+      state:   started

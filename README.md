@@ -14,8 +14,7 @@ Collected here are some bits and pieces to create a setup for this that streamli
 
 The Calliope mini micro controller has been sold in several (HW) revisons over the years. The versions differ in the
 firmware running on the controller as well how the filesystem is presented to the host operating system. You can
-find the version of your Calliope printed on the backside of the circuit board. Examples can be seen here (click
-for a larger version):
+find the version of your Calliope printed on the backside of the circuit board. Examples can be seen here [Click here for a larger version](images/Calli_rev.png):
 
 ![Revisions](images/Calli_rev_small.png)
 
@@ -27,7 +26,7 @@ Revision 2.1 exports two file systems. One again labeled "MINI" with a UUID of 0
 
 While for first experiments it is preferable to use the mount utility for removable storage devices of your graphical desktop environment (e.g. KDE or Gnome) if frequent uploads of new code versions to the Calliope are required this quickly becomes a nuisance.
 
-One way to streamline this is to use the autofs <https://docs.kernel.org/filesystems/autofs.html> "file system" to automatically mount the Calliope when it is accessed. To implement this
+One way to streamline this is to use the autofs <https://docs.kernel.org/filesystems/autofs.html> "file system" to automatically mount the Calliope mini when it is accessed. To implement this
 
 * Install the autofs package using the package manager of your distribution (e.g. zypper, dnf, apt)
 * Create the directory where the Calliope devices will be mounted. Ensure the direcotry is owned by user/group root:root and has a protection of 755 like this
@@ -47,19 +46,19 @@ drwxr-xr-x 2 root root 0 Dec  9 18:56 /calli
   * The file /etc/auto.calli should contain the following lines to cover the three file system UUIDs discussed above
 
   ```text
-  cAm     -fstype=vfat,rw,gid=calliuser,umask=002     :/dev/disk/by-uuid/2702-1974
-  cBm     -fstype=vfat,rw,gid=calliuser,umask=002     :/dev/disk/by-uuid/0123-4567
-  cBf     -fstype=vfat,rw,gid=calliuser,umask=002     :/dev/disk/by-uuid/089A-BCDE
+  cAm     -fstype=vfat,rw,gid=mc-user,umask=002     :/dev/disk/by-uuid/2702-1974
+  cBm     -fstype=vfat,rw,gid=mc-user,umask=002     :/dev/disk/by-uuid/0123-4567
+  cBf     -fstype=vfat,rw,gid=mc-user,umask=002     :/dev/disk/by-uuid/089A-BCDE
   ```
 
-  * The group id (gid) in the example above should be a group that all users that will work with the Calliope mini on the system.
+  * The group id (gid) in the example above should be a group that all users that will work with the Calliope mini on the system belong to.
   
 * Configure sudo rights
-  * Checking the configuration in auto.master above, one can see the `--timeout=300` entry in the configuration. This setting will cause the file system to be automatically removed after 300s (5 min). This is in general a good value for interacive use This could be lowered to a minimum of 1s here, but even this is rather too long for the workflow with Calliope. To resolve this, the Calliope mini needs to be explizitly removed from the system, which is a prvileged operation. 
+  * Checking the configuration in auto.master above, one can see the `--timeout=300` entry in the configuration. This setting will cause the file system to be automatically removed after 300s (5 min). This is in general a good value for interacive use This could be lowered to a minimum of 1s here, but even this is rather too long for the workflow with Calliope. To resolve this, the Calliope mini needs to be explicitly removed from the system, which is a prvileged operation.
   * To allow this, one assigns sudo (<https://en.wikipedia.org/wiki/Sudo>) rights to the users for this particular task
   
 ```text
-%calliuser ALL=(ALL) NOPASSWD: /usr/bin/umount /calli/cAm, /usr/bin/umount /calli/cBm, /usr/bin/umount /calli/cBf
+%mc-user ALL=(ALL) NOPASSWD: /usr/bin/umount /calli/cAm, /usr/bin/umount /calli/cBm, /usr/bin/umount /calli/cBf
   ```
 
   * This line should be added to `/etc/sudoers`. One might be tempted to shorten this to just list `/usr/bin/umount /calli/*`. This is not recommended as usage of wildcards in the command part of sudo rules is a very common source of privilege escalation problems.
@@ -69,7 +68,7 @@ drwxr-xr-x 2 root root 0 Dec  9 18:56 /calli
 Once all of this is in place files can be transfered with the [calliope.sh](calliope.sh) script. Things to note:
 
 * The filename to transfer is hard coded as `MYPROG.HEX`. If you want to change this, alter the definition of `progName` at the start of the script
-* This version of the script keeps a backup copy of all HEX files transfered to Calliope mini in the (hidden) direcotry `.archive_calli`. Advantage: One can revert to previous version of the (Hex) code in case subsequent changes broke a program. (Although )
+* This version of the script keeps a backup copy of all HEX files transfered to Calliope mini in the (hidden) direcotry `.archive_calli`. Advantage: One can revert to previous version of the (Hex) code in case subsequent changes broke a program. (Although not of the source code, this would need to be arranged in the IDE). Disadvantage: The archive directory needs to be cleaned every now and then.
 
 ## (Simple) Troubleshooting
 
