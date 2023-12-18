@@ -5,7 +5,7 @@
 # Note: Generate password with the following command:
 # ansible all -i localhost, -m debug -a "msg={{ 'microFun' | password_hash('sha512', 'mysecretsalt') }}"
   
-  tasks
+  tasks:
   - name: Ensure mc-user group exists
     group:
       name: mc-user
@@ -20,6 +20,7 @@
       passowrd: $6$mysecretsalt$9LuQ2h0JGIht72G8nhkhEKou1G97NaKwiz70witt9be6ZB1.GNHViY0IX.Pdh5Csrd6ygi7IiWSJgWT6OSC2l1
       update_password: on_create
       state: present
+    register: c1_data  
 
   - name: Setup Calliope mini user 2 (calliuser2)
     user:
@@ -30,6 +31,28 @@
       passowrd: $6$mysecretsalt$9LuQ2h0JGIht72G8nhkhEKou1G97NaKwiz70witt9be6ZB1.GNHViY0IX.Pdh5Csrd6ygi7IiWSJgWT6OSC2l1
       update_password: on_create
       state: present
+    register: c2_data  
+
+  - name: Created Downloads directory for Calliope users
+    file:
+      path: "{{ item.home }}/Downloads"
+      state: directory
+      owner: "{{ item.name}}"
+      group: mc-user
+    with_items:
+      - "{{ c1_data }}"
+      - "{{ c2_data }}"
+      
+  - name: Copy calliope.sh to users Downloads directory
+    copy: 
+      src: files/calliope.sh
+      dest: "{{ item.home }}/Downloads"
+      owner: "{{ item.name }}"
+      group: mc-user
+      mode:  0755
+    with_items:
+      - "{{ c1_data }}"
+      - "{{ c2_data }}"
 
 #  - name: Setup other users with access to Calliope mini as needed
 #    user:
@@ -39,8 +62,6 @@
 #    with_items:
 #      - alice
 #      - bob
-
-
 
   - name: Make sure autofs is installed
     zypper:
@@ -57,6 +78,19 @@
       group: root
       mode:  0755
 
+  - name: Create backup copy of auto.master
+    fetch:
+      src: /etc/auto.master
+      dest: backup/{{ ansible_hostname }}/etc/auto.master.{{ ansible_date_time.iso8601_basic_short }}
+      flat: true
+      fail_on_missing: true
+
+  - name: Create backup copy of sudoers
+    fetch:
+      src: /etc/sudoers
+      dest: backup/{{ ansible_hostname }}/etc/auto.master.{{ ansible_date_time.iso8601_basic_short }}
+      flat: true
+      fail_on_missing: true
 
   - name: Copy autofs config files
     copy:
