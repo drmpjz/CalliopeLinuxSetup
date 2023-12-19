@@ -102,7 +102,7 @@ If you are not familiar with Ansible and have no other use cases for it, it most
   For all verions but 2.1 copy the file you downloaded to the drive on the Calliope mini. For version 2.1 extract the files from the zip file you downloaded. The archive contains jlinkobcalliopemini_v21_230822.uf2. Copy this file to the drive of the Calliope.
   The update will start automatically. As part of the update process the file you copied will be removed from the Calliope drive. Afterwards the MINI (and for the revision 2.1 FLASH) drive will be visible again.
 
-### Firmwware update
+### Firmware update
 
 Like the paragraph above, just intentional :-) To put the Calliope mini into Maintenance mode
 
