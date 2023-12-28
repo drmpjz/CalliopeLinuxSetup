@@ -1,0 +1,3 @@
+## Allow  members of group mc-user to unmount Calliope directories
+%mc-user ALL=(ALL) NOPASSWD: /usr/bin/umount /calli/cAm, /usr/bin/umount /calli/cBm, /usr/bin/umount /calli/cBf
+

@@ -17,7 +17,7 @@
       comment: Calliope mini user 1
       group: mc-user
       shell: /bin/bash
-      passowrd: $6$mysecretsalt$9LuQ2h0JGIht72G8nhkhEKou1G97NaKwiz70witt9be6ZB1.GNHViY0IX.Pdh5Csrd6ygi7IiWSJgWT6OSC2l1
+      password: $6$mysecretsalt$9LuQ2h0JGIht72G8nhkhEKou1G97NaKwiz70witt9be6ZB1.GNHViY0IX.Pdh5Csrd6ygi7IiWSJgWT6OSC2l1
       update_password: on_create
       state: present
     register: c1_data  
@@ -28,12 +28,12 @@
       comment: Calliope mini user 2
       group: mc-user
       shell: /bin/bash
-      passowrd: $6$mysecretsalt$9LuQ2h0JGIht72G8nhkhEKou1G97NaKwiz70witt9be6ZB1.GNHViY0IX.Pdh5Csrd6ygi7IiWSJgWT6OSC2l1
+      password: $6$mysecretsalt$9LuQ2h0JGIht72G8nhkhEKou1G97NaKwiz70witt9be6ZB1.GNHViY0IX.Pdh5Csrd6ygi7IiWSJgWT6OSC2l1
       update_password: on_create
       state: present
     register: c2_data  
 
-  - name: Created Downloads directory for Calliope users
+  - name: Create Downloads directory for Calliope users
     file:
       path: "{{ item.home }}/Downloads"
       state: directory
@@ -81,13 +81,6 @@
   - name: Create backup copy of auto.master
     fetch:
       src: /etc/auto.master
-      dest: backup/{{ ansible_hostname }}/etc/auto.master.{{ ansible_date_time.iso8601_basic_short }}
-      flat: true
-      fail_on_missing: true
-
-  - name: Create backup copy of sudoers
-    fetch:
-      src: /etc/sudoers
       dest: backup/{{ ansible_hostname }}/etc/auto.master.{{ ansible_date_time.iso8601_basic_short }}
       flat: true
       fail_on_missing: true

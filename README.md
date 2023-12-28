@@ -59,9 +59,9 @@ drwxr-xr-x 2 root root 0 Dec  9 18:56 /calli
   
 ```text
 %mc-user ALL=(ALL) NOPASSWD: /usr/bin/umount /calli/cAm, /usr/bin/umount /calli/cBm, /usr/bin/umount /calli/cBf
-  ```
+```
 
-  * This line should be added to `/etc/sudoers`. One might be tempted to shorten this to just list `/usr/bin/umount /calli/*`. This is not recommended as usage of wildcards in the command part of sudo rules is a very common source of privilege escalation problems.
+  * Put this line in a file (e.g. `mc-user.rules`)  and copy it to `/etc/sudoers.d`. One might be tempted to shorten this to just list `/usr/bin/umount /calli/*`. This is not recommended as usage of wildcards in the command part of sudo rules is a very common source of privilege escalation problems.
 
 ## Transfer Script
 
@@ -81,8 +81,8 @@ If you are already familiar with [Ansible](https://www.ansible.com/) to automate
 * Create the `~/Downloads` directory for these users and copy the `calliope.sh` file to this.
 * Make sure autofs is installed. Note: This is currently implemented for the openSUSE Linux distribution. If you are using something else, either adapt the playbook to use the package manager of your distribution or open an issue with information on your environment.
 * Create a directory where the Calliope mini file systems will be mounted
-* Create backup copies of `/etc/auto.master` and `/etc/sudoers`.  These will be over written on the target system in the next step. **The contents of the files on the target system should be checked before running the playbook to make sure there are no unintended side effects. The backup copies are a saftey net so one can return to the original state in case of problems**
-* Copy `auto.master`, `auto.calli` and `sudoers` files with configuration settings as described above to the target system.
+* Create a backup copiy of `/etc/auto.master`.  This will be over written on the target system in the next step. **The contents of this file on the target system should be checked before running the playbook to make sure there are no unintended side effects. The backup copy is a saftey net so one can return to the original state in case of problems**
+* Copy `auto.master`, `auto.calli` and `mc-user.rules` files with configuration settings as described above to the target system.
 * Make sure the `autofs` service is running with the configuration for Calliope mini.
 
 If you are not familiar with Ansible and have no other use cases for it, it most probably is easier to implement the changes described here manually.
