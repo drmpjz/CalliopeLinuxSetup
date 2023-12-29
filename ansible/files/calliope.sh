@@ -4,7 +4,7 @@ progName="MYPROG.HEX"
 
 if test -L /dev/disk/by-uuid/2702-1974
 then
-    echo "Calliope mini < Rev 2.1"
+    echo "Calliope mini !+ Rev 2.1"
     target="/calli/cAm"
 elif test -L /dev/disk/by-uuid/0123-4567
 then 
