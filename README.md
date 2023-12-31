@@ -110,4 +110,9 @@ Like the paragraph above, just intentional :-) To put the Calliope mini into Mai
 * Press the Reset Button. ![Reset](images/Calli_reset_small.png) [Click here for a larger version](images/Calli_reset.png)
 * While holding the reset button connect the USB cable.
 * Proceed as described above depending on the version of Calliope mini you have.
-  
+
+## Limitations
+
+The described setup works well as long as you connect one Calliope mini at a time to your Linux computer. Since the autofs configuration uses the UUID, which is, for these particular devices, not unique, connecting more than one Calliope mini at the same time to your system will only connect to one of them.
+
+For use in classroom/courses this should not be an issue. If you do have a practical use case to multiple Calliope minis connected at the same time, please enter an issue in this project describing the intended setup.
