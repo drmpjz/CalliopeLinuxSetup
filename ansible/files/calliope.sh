@@ -1,6 +1,6 @@
 #!/bin/bash
 
-progName="MYPROG.HEX"
+progName="mini-MyProg.hex"
 
 if test -L /dev/disk/by-uuid/2702-1974
 then

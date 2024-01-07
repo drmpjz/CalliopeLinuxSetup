@@ -67,7 +67,7 @@ drwxr-xr-x 2 root root 0 Dec  9 18:56 /calli
 
 Once all of this is in place files can be transfered with the [calliope.sh](ansible/files/calliope.sh) script. Things to note:
 
-* The filename to transfer is hard coded as `MYPROG.HEX`. If you want to change this, alter the definition of `progName` at the start of the script
+* The filename to transfer is hard coded as `mini-MyProg.hex`. If you want to change this, alter the definition of `progName` at the start of the script
 * This version of the script keeps a backup copy of all HEX files transfered to Calliope mini in the (hidden) direcotry `.archive_calli`. Advantage: One can revert to previous version of the (Hex) code in case subsequent changes broke a program. (Although not of the source code, this would need to be arranged in the IDE). Disadvantage: The archive directory needs to be cleaned every now and then.
 * How to use
   * As this is a bash script, the obvious way to use it, is to open a terminal and execute the script in there. In this mode  output of the script will be visible, including the type of Calliope mini connected to the system, as well a reporting error conditions. If you are running into problems with the transfer, this is the recommended way to start the investigation of the root cause.
