@@ -115,4 +115,9 @@ Like the paragraph above, just intentional :-) To put the Calliope mini into Mai
 
 The described setup works well as long as you connect one Calliope mini at a time to your Linux computer. Since the autofs configuration uses the UUID, which is, for these particular devices, not unique, connecting more than one Calliope mini at the same time to your system will only connect to one of them.
 
+## Not-Calliope ;-)
+
+Got my hands on another popular micro controller in educational settings the [BBC micro:bit](https://microbit.org/). This also exposes a disk via usb to the linux host and it does use the same UUID as most the Calliope mini boards (besides of revision 2.1). The only difference is, that the disk label in this case is MICROBIT. This means that you can use the setup above also to transfer your programs to the BBC micro:bit.  
+
+
 For use in classroom/courses this should not be an issue. If you do have a practical use case to multiple Calliope minis connected at the same time, please enter an issue in this project describing the intended setup.
