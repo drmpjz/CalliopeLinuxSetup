@@ -3,8 +3,11 @@
 Bits and pieces to make Calliope mini work with Linux
 
 Calliope mini is a micro controller used in educational settings starting in elementary school in Germany. Programming is done mostly in block languages
-in web based editors. These generate Hex code, which first needs to be downloaded to a local device and then has
-to be transfered via USB to the Calliope mini. For details see <https://calliope.cc/> .
+in web based editors. These generate Hex code, which needs to be transfered to Calliope mini. There are two ways to do this. Working for all Calliope  mini versions
+is to first download the hex code  to a local device, attached the Calliope mini as a USB storage device and copy the file to this. For Calliope mini v3 and 
+Chromium base browsers there is also the option to attach the Calliope mini directly to the browser via WebUSB. 
+
+For details on Calliope see <https://calliope.cc/> .
 
 Collected here are some bits and pieces to create a setup for this that streamlines the process for Linux.
 
@@ -87,6 +90,24 @@ If you are already familiar with [Ansible](https://www.ansible.com/) to automate
 
 If you are not familiar with Ansible and have no other use cases for it, it most probably is easier to implement the changes described here manually.
 
+## Calliope mini v3 and WebUSB
+
+To be able to use this setup as a non-root user one needs to allow access to the Calliope mini USB device using udev. The required USB vendor and product id can 
+easily be found by inspecting the output of `lsusb`.
+
+As a user with root privileges:
+
+The result needs to be entered in a udev rules file e.g. `/etc/udev/rules.d/99-calliope.rules`. The file should look like this
+
+  ```text
+# udev rules for Calliope micro controller
+#
+# Calliope 3
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0d28", ATTRS{idProduct}=="0204", MODE="0666"
+
+  ```
+After the rule has been added, udevd needs to be told to reload the configuration, e.g. `udevadm control --reload-rules && udevadm trigger`
+ 
 ## (Simple) Troubleshooting
 
 ### Calliope mini file system in "MAINTENANCE"
